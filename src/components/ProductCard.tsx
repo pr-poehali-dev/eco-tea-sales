@@ -3,21 +3,12 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import Icon from '@/components/ui/icon';
-
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-  image: string;
-  category: string;
-  effects: string[];
-  ingredients: string[];
-  description: string;
-}
+import { Product } from '@/types';
 
 interface ProductCardProps {
   product: Product;
-  onAddToCart: (product: Product) => void;
+  onAddToCart?: (product: Product) => void;
+  onClick?: (product: Product) => void;
   showIngredients?: boolean;
 }
 
@@ -29,10 +20,14 @@ const effectIcons: { [key: string]: any } = {
   'Концентрация': Zap
 };
 
-const ProductCard = ({ product, onAddToCart, showIngredients = false }: ProductCardProps) => {
+const ProductCard = ({ product, onAddToCart, onClick, showIngredients = false }: ProductCardProps) => {
+  const handleCardClick = () => {
+    if (onClick) onClick(product);
+  };
+
   return (
-    <Card className="overflow-hidden hover:shadow-xl transition-all animate-scale-in">
-      <img src={product.image} alt={product.name} className="w-full h-48 object-cover" />
+    <Card className="overflow-hidden hover:shadow-xl transition-all animate-scale-in cursor-pointer" onClick={handleCardClick}>
+      <img src={product.images[0]} alt={product.name} className="w-full h-48 object-cover" />
       <CardContent className="pt-4">
         <Badge variant="secondary" className="mb-2">{product.category}</Badge>
         <h4 className="font-semibold text-lg mb-2 font-heading">{product.name}</h4>
@@ -56,10 +51,12 @@ const ProductCard = ({ product, onAddToCart, showIngredients = false }: ProductC
       </CardContent>
       <CardFooter className="flex justify-between items-center">
         <span className="text-2xl font-bold text-primary">{product.price} ₽</span>
-        <Button onClick={() => onAddToCart(product)}>
-          <Icon name="ShoppingCart" className="h-4 w-4 mr-2" />
-          В корзину
-        </Button>
+        {onAddToCart && (
+          <Button onClick={(e) => { e.stopPropagation(); onAddToCart(product); }}>
+            <Icon name="ShoppingCart" className="h-4 w-4 mr-2" />
+            В корзину
+          </Button>
+        )}
       </CardFooter>
     </Card>
   );

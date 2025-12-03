@@ -1,0 +1,23 @@
+{
+  "tests": [
+    {
+      "name": "Get all products",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200,
+      "expectedBody": [],
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Get single product",
+      "method": "GET",
+      "path": "/?id=1",
+      "expectedStatus": 200,
+      "expectedBody": {
+        "name": "string",
+        "price": "number"
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}

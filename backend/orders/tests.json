@@ -1,0 +1,27 @@
+{
+  "tests": [
+    {
+      "name": "Create new order",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "userId": 1,
+        "items": [
+          {
+            "productId": 1,
+            "name": "Test Product",
+            "price": 500,
+            "quantity": 2
+          }
+        ]
+      },
+      "expectedStatus": 201,
+      "expectedBody": {
+        "success": true,
+        "orderId": "number",
+        "totalPrice": 1000
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}
